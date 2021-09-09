@@ -13,7 +13,7 @@
 }
 
 #body {
-  height: 100%;
+  height: 100vh;
   width: 1024px;
   /* 자식이 부모를 기준으로 가운데 정렬 */
   margin: 0 auto;
@@ -94,4 +94,9 @@
 
 .product-avatar {
   width: 24px;
+}
+
+.product-link {
+  color: inherit;
+  text-decoration: none;
 }
