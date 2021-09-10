@@ -1,25 +1,6 @@
-* {
-  /* 모든 tag에는 default로 margin이 들어가 있음! 없애주기 */
-  margin: 0;
-  padding: 0;
-}
-
 #banner {
   height: 300px;
   background-color: palegoldenrod;
-}
-
-#header-area {
-  width: 1024px;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-}
-
-#header-area > img {
-  width: 126px;
-  height: 36px;
 }
 
 #banner > img {
