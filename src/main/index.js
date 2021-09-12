@@ -2,6 +2,10 @@ import React from "react";
 import "./index.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 function MainPage() {
   const [products, setProducts] = React.useState([]);
@@ -9,11 +13,14 @@ function MainPage() {
   // useEffect 안에 axios 안넣어주면 주한대로 setProduct가 통신되는 오류 발생
   React.useEffect(function () {
     axios
-      .get(
-        "https://0a6a94d4-5496-4870-a65b-ba04a9d2458f.mock.pstmn.io/products"
-      )
+      // 방법1. Mockserver 이용하기
+      // .get(
+      //   "https://0a6a94d4-5496-4870-a65b-ba04a9d2458f.mock.pstmn.io/products"
+      // )
+      // 방법2. node 서버 이용하기
+      .get("http://localhost:8080/products")
       .then(function (result) {
-        const products = result.data.product;
+        const products = result.data.products;
         // useState에서 초기값이 []이니까 여기서 먼저 update한번 해주기
         setProducts(products);
       })
@@ -40,12 +47,17 @@ function MainPage() {
                 <div className="product-contents">
                   <span className="product-name">{product.name}</span>
                   <span className="product-price">{product.price}원</span>
-                  <div className="product-seller">
-                    <img
-                      className="product-avatar"
-                      src="images/icons/avatar.png"
-                    />
-                    <span>{product.seller}</span>
+                  <div className="product-footer">
+                    <div className="product-seller">
+                      <img
+                        className="product-avatar"
+                        src="images/icons/avatar.png"
+                      />
+                      <span>{product.seller}</span>
+                    </div>
+                    <span className="product-date">
+                      {dayjs(product.createdAt).fromNow()}
+                    </span>
                   </div>
                 </div>
               </Link>
