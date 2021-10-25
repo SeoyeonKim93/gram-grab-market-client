@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { API_URL } from "../config/constants.js";
 
 dayjs.extend(relativeTime);
 
@@ -18,7 +19,7 @@ function MainPage() {
       //   "https://0a6a94d4-5496-4870-a65b-ba04a9d2458f.mock.pstmn.io/products"
       // )
       // 방법2. node 서버 이용하기
-      .get("http://localhost:8080/products")
+      .get(`${API_URL}/products`)
       .then(function (result) {
         const products = result.data.products;
         // useState에서 초기값이 []이니까 여기서 먼저 update한번 해주기
@@ -34,15 +35,22 @@ function MainPage() {
       <div id="banner">
         <img src="images/banners/banner1.png" />
       </div>
-      <h1>판매되는 상품들</h1>
+      <h1 id="product-headline">판매되는 상품들</h1>
       <div id="product-list">
         {/* 배열로 부터 순회를 하면서 return 안을 내보냄 */}
         {products.map(function (product, index) {
           return (
             <div className="product-card">
-              <Link className="product-link" to={`/products/${product.id}`}>
+              <Link
+                style={{ color: "inherit" }}
+                className="product-link"
+                to={`/products/${product.id}`}
+              >
                 <div>
-                  <img className="product-img" src={product.imageurl} />
+                  <img
+                    className="product-img"
+                    src={`${API_URL}/${product.imageurl}`}
+                  />
                 </div>
                 <div className="product-contents">
                   <span className="product-name">{product.name}</span>

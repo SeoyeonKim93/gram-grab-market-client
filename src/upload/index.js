@@ -1,9 +1,54 @@
-import { Divider, Form, Input, InputNumber, Button } from "antd";
+import {
+  Divider,
+  Form,
+  Input,
+  InputNumber,
+  Button,
+  Upload,
+  message,
+} from "antd";
 import "./index.css";
+import { useState } from "react";
+import { API_URL } from "../config/constants.js";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function UploadPage() {
+  const [imageurl, setImageurl] = useState(null);
+  // 페이지 이동을 위한 준비
+  const history = useHistory();
   const onSubmit = (values) => {
     console.log(values);
+    // value를 활용해서 우리의 API 서버로 통신
+    axios
+      .post(`${API_URL}/products`, {
+        name: values.name,
+        description: values.description,
+        seller: values.seller,
+        price: parseInt(values.price),
+        imageurl: imageurl,
+      })
+      .then((result) => {
+        console.log(result);
+        // 이전 페이지로 돌아가기
+        history.replace("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error(`에러가 발생했습니다.${error.message}`);
+      });
+  };
+
+  const onChangeImage = (info) => {
+    if (info.file.status === "uploading") {
+      return;
+    }
+    if (info.file.status === "done") {
+      const response = info.file.response;
+      const imageurl = response.imageurl;
+      // 받은 image에 대한 정보를 'useState' 라이브러리를 update해서 저장
+      setImageurl(imageurl);
+    }
   };
   return (
     <div id="upload-container">
@@ -12,10 +57,27 @@ function UploadPage() {
           name="upload"
           label={<div className="upload-label">상품 사진</div>}
         >
-          <div id="upload-img-placeholder">
-            <img src="/images/icons/camera.png" />
-            <span>이미지를 업로드 해주세요.</span>
-          </div>
+          <Upload
+            name="image"
+            action={`${API_URL}/image`}
+            listType="picture"
+            showUploadList={false}
+            // onChage : image의 경로를 받아서 처리하는 함수
+            onChange={onChangeImage}
+          >
+            {
+              // jsx 문법 사용
+              // imageurl이 있을 때 없을 때 무엇을 보여주려는 지 적어준다
+              imageurl ? (
+                <img id="upload-img" src={`${API_URL}/${imageurl}`} />
+              ) : (
+                <div id="upload-img-placeholder">
+                  <img src="/images/icons/camera.png" />
+                  <span>이미지를 업로드 해주세요.</span>
+                </div>
+              )
+            }
+          </Upload>
         </Form.Item>
         {/* 선을 하나 그어주는 역할 : Divider */}
         <Divider />

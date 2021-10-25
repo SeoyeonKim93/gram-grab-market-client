@@ -44,3 +44,11 @@
   border: none;
   margin-top: 16px;
 }
+
+#upload-img {
+  width: 200px;
+  height: 200px;
+  margin-left: 16px;
+  /* 이미지의 가로&세로 비율 맞춰주기 */
+  object-fit: contain;
+}
