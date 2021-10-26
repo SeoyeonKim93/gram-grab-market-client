@@ -32,8 +32,10 @@ body,
   height: 36px;
 }
 #body {
-  height: 100vh;
-  width: 1024px;
+  min-height: 100vh;
+  /* 반응형 웹으로 처리하기 */
+  max-width: 1024px;
+  width: 100%;
   /* 자식이 부모를 기준으로 가운데 정렬 */
   margin: 0 auto;
   padding-bottom: 12px;
@@ -42,4 +44,22 @@ body,
 #footer {
   height: 200px;
   background-color: rgb(230 230 230);
+}
+
+/* 미디어 쿼리 사용해보기 - 앱(모바일) 개발 시 많이 사용 */
+@media screen and (max-width: 400px) {
+  .product-card {
+    /* !important 의미 : 우선 적용 */
+    width: 100px !important;
+  }
+  #header {
+    padding: 0 8px;
+  }
+  #body {
+    padding: 0 8px;
+  }
+  /* Carousel 태그에 대한 css 적용 */
+  .ant-carousel {
+    margin: 0 -8px;
+  }
 }
